@@ -21,7 +21,6 @@ public class RESTApiTests {
 	@LocalServerPort
 	private Integer port;
 
-
 	@BeforeEach
 	public void setup() {
 		RestAssured.port = port;
@@ -38,7 +37,7 @@ public class RESTApiTests {
 				.extract().as(CreateShortUrlResultDTO.class);
 
 		assertThat(resultDTO).isNotNull();
-		assertThat(resultDTO).extracting(CreateShortUrlResultDTO::getShortUrl).isEqualTo("/0000000");
+		assertThat(resultDTO).extracting(CreateShortUrlResultDTO::getShortUrl).isEqualTo("/4C9B");
 		assertThat(resultDTO).extracting(CreateShortUrlResultDTO::getDestination)
 				.isEqualTo("http://localhost");
 

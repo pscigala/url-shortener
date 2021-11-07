@@ -4,16 +4,16 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 class MultiThreadIdPoolGeneratorTest {
 
 	@Test
-	void v(){
+	void shouldReturnIdPoolsGeneratedByMultipleThreads() {
 		MultiThreadIdPoolGenerator gener = new MultiThreadIdPoolGenerator();
 
-		List<IdsPool> idsPools = gener.nextIdPools(1);
-		List<IdsPool> idsPools2 = gener.nextIdPools(6);
-		List<IdsPool> idsPools3 = gener.nextIdPools(11);
+		List<IdsPool> idsPools = gener.generateNextPools(1);
 
-		System.out.println(idsPools.size());
+		assertNotNull(idsPools);
 	}
 }

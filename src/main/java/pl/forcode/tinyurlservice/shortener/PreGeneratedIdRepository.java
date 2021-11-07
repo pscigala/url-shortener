@@ -1,27 +1,44 @@
 package pl.forcode.tinyurlservice.shortener;
 
 import org.springframework.stereotype.Component;
-import pl.forcode.tinyurlservice.shortener.exception.EmptyIdStorageException;
+import pl.forcode.tinyurlservice.idGenerator.IdPoolGenerator;
+import pl.forcode.tinyurlservice.idGenerator.IdsPool;
+import pl.forcode.tinyurlservice.idPool.PoolNumberService;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import static java.util.stream.Collectors.toCollection;
 
 @Component
 public class PreGeneratedIdRepository implements IdRepository {
 
-	private ConcurrentLinkedQueue<ShortUrlId> idStorage = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedQueue<ShortUrlId> idQueue;
 
-	public PreGeneratedIdRepository() {
-		for (int i = 0; i < 100; i++) {
-			String s = i + "" + i + "" + i + "" + i + "" + i + "" + i + "" + i;//todo
-			idStorage.add(new ShortUrlId(String.valueOf(s)));
-		}
+	private final IdPoolGenerator idPoolGenerator;
+	private final PoolNumberService idPoolNumberService;
+
+	public PreGeneratedIdRepository(IdPoolGenerator idPoolGenerator, PoolNumberService idPoolNumberService) {
+		this.idPoolGenerator = idPoolGenerator;
+		this.idPoolNumberService = idPoolNumberService;
+		generateNextIdPool();
 	}
 
 	@Override
 	public ShortUrlId getNewId() {
-		if (idStorage.isEmpty()) {
-			throw new EmptyIdStorageException();
+		if (idQueue.isEmpty()) {
+			generateNextIdPool();
 		}
-		return idStorage.poll();
+		return idQueue.poll();
+	}
+
+	private void generateNextIdPool() {
+		IdsPool idsPools = idPoolGenerator.generateNextPool(idPoolNumberService.getNextPoolNumber());
+		idQueue = initIdQueue(idsPools);
+	}
+
+	private ConcurrentLinkedQueue<ShortUrlId> initIdQueue(IdsPool idsPools) {
+		return idsPools.ids().stream()
+				.map(ShortUrlId::new)
+				.collect(toCollection(ConcurrentLinkedQueue::new));
 	}
 }

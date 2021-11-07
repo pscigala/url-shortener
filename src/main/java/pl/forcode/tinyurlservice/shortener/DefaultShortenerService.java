@@ -15,7 +15,6 @@ public class DefaultShortenerService implements ShortenerService {
 	public ShortenUrlResult shortUrl(CreateShortUrl input) {
 		ShortUrlId id = idRepository.getNewId();
 
-
 		ShortenUrlResult result = new ShortenUrlResult("/" + id.getId(), input.getOriginalUrl(), LocalDateTime.now(), null);
 
 		return result;

@@ -1,5 +1,6 @@
 package pl.forcode.tinyurlservice.idGenerator;
 
+import org.springframework.stereotype.Component;
 import pl.forcode.tinyurlservice.idGenerator.exception.IdPoolGenerationInProgress;
 
 import java.math.BigInteger;
@@ -10,6 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.locks.ReentrantLock;
 
+@Component
 class MultiThreadIdPoolGenerator implements IdPoolGenerator {
 
 	private static final ReentrantLock lock = new ReentrantLock();
@@ -23,12 +25,19 @@ class MultiThreadIdPoolGenerator implements IdPoolGenerator {
 	private static final ForkJoinPool pool = (ForkJoinPool) Executors.newWorkStealingPool(PARALLELISM);
 
 	@Override
-	public List<IdsPool> nextIdPools(int lastPoolNumber) {
-		return nextIdPools(lastPoolNumber, DEFAULT_ID_POOLS_AMOUNT);
+	public IdsPool generateNextPool(long lastPoolNumber) {
+		return generateNextPools(lastPoolNumber, 1).stream()
+				.findFirst()
+				.orElseThrow();
 	}
 
 	@Override
-	public List<IdsPool> nextIdPools(int lastPoolNumber, int poolsAmount) {
+	public List<IdsPool> generateNextPools(long lastPoolNumber) {
+		return generateNextPools(lastPoolNumber, DEFAULT_ID_POOLS_AMOUNT);
+	}
+
+	@Override
+	public List<IdsPool> generateNextPools(long lastPoolNumber, int poolsAmount) {
 		if (lock.isLocked()) {
 			throw new IdPoolGenerationInProgress();
 		} else {
@@ -49,7 +58,7 @@ class MultiThreadIdPoolGenerator implements IdPoolGenerator {
 	}
 
 
-	private Collection<String> generate(int rangeNumber) {
+	private Collection<String> generate(long rangeNumber) {
 		//todo propper math adding on biginteger
 		BigInteger from = new BigInteger(String.valueOf(rangeNumber * RANGE - RANGE)).add(RANGE_OFFSET);
 		BigInteger to = new BigInteger(String.valueOf(rangeNumber * RANGE)).add(RANGE_OFFSET);

@@ -1,4 +1,4 @@
-package pl.forcode.tinyurlservice;
+package pl.forcode.tinyurlservice.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +12,7 @@ import pl.forcode.tinyurlservice.shortener.ShortenUrlResult;
 import pl.forcode.tinyurlservice.shortener.ShortenerService;
 
 @RestController
-@RequestMapping("/url")
+@RequestMapping("/url")//todo add api ctx
 @RequiredArgsConstructor
 public class UrlShortenerController {
 

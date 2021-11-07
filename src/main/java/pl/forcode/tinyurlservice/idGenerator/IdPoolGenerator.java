@@ -4,7 +4,9 @@ import java.util.List;
 
 public interface IdPoolGenerator {
 
-	List<IdsPool> nextIdPools(int lastPoolNumber);
+	IdsPool generateNextPool(long lastPoolNumber);
 
-	List<IdsPool> nextIdPools(int lastPoolNumber, int poolsAmount);
+	List<IdsPool> generateNextPools(long lastPoolNumber);
+
+	List<IdsPool> generateNextPools(long lastPoolNumber, int poolsAmount);
 }
