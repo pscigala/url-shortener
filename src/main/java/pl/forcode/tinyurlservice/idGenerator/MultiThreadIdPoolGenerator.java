@@ -19,7 +19,7 @@ class MultiThreadIdPoolGenerator implements IdPoolGenerator {
 	private static final int RANGE = 1_000_000;
 	private static final BigInteger RANGE_OFFSET = new BigInteger(String.valueOf(RANGE));
 
-	public static final int DEFAULT_ID_POOLS_AMOUNT = 5;
+	public static final int DEFAULT_ID_POOLS_AMOUNT = 1;
 
 	private static final int PARALLELISM = ForkJoinPool.getCommonPoolParallelism();
 	private static final ForkJoinPool pool = (ForkJoinPool) Executors.newWorkStealingPool(PARALLELISM);

@@ -6,6 +6,9 @@ spring:
       discovery:
         enabled: true
       connect-string: localhost:2181
+  redis:
+    host: localhost
+    port: 6379
 logging:
   level:
     org.apache.zookeeper.ClientCnxn: WARN

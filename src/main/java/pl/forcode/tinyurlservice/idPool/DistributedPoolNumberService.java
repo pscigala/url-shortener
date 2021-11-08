@@ -31,9 +31,9 @@ public class DistributedPoolNumberService implements PoolNumberService, SharedCo
 	@Override
 	public long getNextPoolNumber() {
 		try {
-			AtomicValue<Long> val = counter.increment();
-			if (val.succeeded()) {
-				Long poolNumber = val.preValue();
+			AtomicValue<Long> value = counter.increment();
+			if (value.succeeded()) {
+				Long poolNumber = value.preValue();
 				log.info("Retrieved nextPoolNumber: {}", poolNumber);
 				return poolNumber;
 			}

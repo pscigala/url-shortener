@@ -11,12 +11,19 @@ public class DefaultShortenerService implements ShortenerService {
 
 	private final IdRepository idRepository;
 
+	private final ShortUrlRepository shortUrlRepository;
+
 	@Override
-	public ShortenUrlResult shortUrl(CreateShortUrl input) {
+	public ShortUrl shortUrl(CreateShortUrl input) {
 		ShortUrlId id = idRepository.getNewId();
+		ShortUrl shortUrl = new ShortUrl(id.getId(), input.getUrl(), LocalDateTime.now());
 
-		ShortenUrlResult result = new ShortenUrlResult("/" + id.getId(), input.getOriginalUrl(), LocalDateTime.now(), null);
+		return shortUrlRepository.save(shortUrl);
+	}
 
-		return result;
+	@Override
+	public ShortUrl findShortUrl(String id) {
+		return shortUrlRepository.findById(id)
+				.orElseThrow();
 	}
 }

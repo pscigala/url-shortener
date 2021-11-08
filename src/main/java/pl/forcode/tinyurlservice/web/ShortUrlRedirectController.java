@@ -1,13 +1,15 @@
 package pl.forcode.tinyurlservice.web;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.forcode.tinyurlservice.shortener.ShortUrl;
 import pl.forcode.tinyurlservice.shortener.ShortenerService;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping
@@ -17,8 +19,10 @@ public class ShortUrlRedirectController {
 	private final ShortenerService shortenerService;
 
 	@GetMapping("/{shortUrlId}")
-	void redirect(@PathParam("shortUrlId") String shortUrlId, HttpServletResponse httpServletResponse) {
-		//todo
+	void redirect(@PathVariable("shortUrlId") String shortUrlId, HttpServletResponse httpServletResponse) {
+		ShortUrl shortUrl = shortenerService.findShortUrl(shortUrlId);
+		httpServletResponse.setHeader(HttpHeaders.LOCATION, shortUrl.getOriginalUrl());
+		httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
 	}
 
 }

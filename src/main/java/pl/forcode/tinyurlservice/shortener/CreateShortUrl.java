@@ -5,6 +5,6 @@ import lombok.Value;
 @Value
 public class CreateShortUrl {
 
-	private final String originalUrl;
+	private final String url;
 
 }

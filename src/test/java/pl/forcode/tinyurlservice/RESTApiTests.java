@@ -31,7 +31,7 @@ public class RESTApiTests {
 	void shouldPostNewUrlToShorten() {
 		CreateShortUrlResultDTO resultDTO = given().body(new CreateShortUrlDTO("http://localhost"))
 				.contentType(ContentType.JSON)
-				.post("/url")
+				.post("/api/url")
 				.then()
 				.statusCode(HttpStatus.OK.value())
 				.extract().as(CreateShortUrlResultDTO.class);
