@@ -9,7 +9,8 @@ class Base62IdGenerator {
 	private static final Base62 base62 = new Base62();
 
 	public static Set<String> range(BigInteger from, BigInteger to) {
-		HashSet<String> result = new HashSet<>(to.intValue());
+		int initialCapacity = to.intValue() - from.intValue();
+		Set<String> result = new HashSet<>(initialCapacity);
 
 		while (!from.equals(to)) {
 			result.add(base62.encode(from));

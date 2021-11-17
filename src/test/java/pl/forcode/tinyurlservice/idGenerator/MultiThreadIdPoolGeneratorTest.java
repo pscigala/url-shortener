@@ -12,7 +12,7 @@ class MultiThreadIdPoolGeneratorTest {
 	void shouldReturnIdPoolsGeneratedByMultipleThreads() {
 		MultiThreadIdPoolGenerator gener = new MultiThreadIdPoolGenerator();
 
-		List<IdsPool> idsPools = gener.generateNextPools(1);
+		List<IdsPool> idsPools = gener.generateNextPools(70);
 
 		assertNotNull(idsPools);
 	}

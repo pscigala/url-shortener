@@ -21,7 +21,7 @@ public class ShortUrlRedirectController {
 	@GetMapping("/{shortUrlId}")
 	void redirect(@PathVariable("shortUrlId") String shortUrlId, HttpServletResponse httpServletResponse) {
 		ShortUrl shortUrl = shortenerService.findShortUrl(shortUrlId);
-		httpServletResponse.setHeader(HttpHeaders.LOCATION, shortUrl.getOriginalUrl());
+		httpServletResponse.setHeader(HttpHeaders.LOCATION, shortUrl.originalUrl());
 		httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
 	}
 

@@ -16,8 +16,7 @@ public class DefaultShortenerService implements ShortenerService {
 	@Override
 	public ShortUrl shortUrl(CreateShortUrl input) {
 		ShortUrlId id = idRepository.getNewId();
-		ShortUrl shortUrl = new ShortUrl(id.getId(), input.getUrl(), LocalDateTime.now());
-
+		ShortUrl shortUrl = new ShortUrl(id.id(), input.url(), LocalDateTime.now());
 		return shortUrlRepository.save(shortUrl);
 	}
 

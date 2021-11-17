@@ -6,9 +6,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import pl.forcode.tinyurlservice.dto.CreateShortUrlDTO;
-import pl.forcode.tinyurlservice.dto.CreateShortUrlResultDTO;
+import pl.forcode.tinyurlservice.web.dto.CreateShortUrlDTO;
+import pl.forcode.tinyurlservice.web.dto.CreateShortUrlResultDTO;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,6 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 		webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 public class RESTApiTests {
+
+	private static final String LOCALHOST_URL = "http://localhost";
 
 	@LocalServerPort
 	private Integer port;
@@ -29,18 +32,55 @@ public class RESTApiTests {
 
 	@Test
 	void shouldPostNewUrlToShorten() {
-		CreateShortUrlResultDTO resultDTO = given().body(new CreateShortUrlDTO("http://localhost"))
+		String originalUrl = getServerHealthCheckUrl();
+		CreateShortUrlResultDTO result = given().body(new CreateShortUrlDTO(originalUrl))
 				.contentType(ContentType.JSON)
 				.post("/api/url")
 				.then()
 				.statusCode(HttpStatus.OK.value())
-				.extract().as(CreateShortUrlResultDTO.class);
+				.extract()
+				.as(CreateShortUrlResultDTO.class);
 
-		assertThat(resultDTO).isNotNull();
-		assertThat(resultDTO).extracting(CreateShortUrlResultDTO::getShortUrl).isEqualTo("/4C9B");
-		assertThat(resultDTO).extracting(CreateShortUrlResultDTO::getDestination)
-				.isEqualTo("http://localhost");
+		assertThat(result)
+				.isNotNull();
+		assertThat(result)
+				.extracting(CreateShortUrlResultDTO::shortUrl)
+				.isNotNull();
+		assertThat(result)
+				.extracting(CreateShortUrlResultDTO::destination)
+				.isEqualTo(originalUrl);
+	}
 
+
+	@Test
+	void shouldRedirectToOriginalUrl() {
+		String originalUrl = getServerHealthCheckUrl();
+		CreateShortUrlResultDTO result = given()
+				.body(new CreateShortUrlDTO(originalUrl))
+				.contentType(ContentType.JSON)
+				.post("/api/url")
+				.then()
+				.statusCode(HttpStatus.OK.value())
+				.extract()
+				.as(CreateShortUrlResultDTO.class);
+
+		String shortUrl = result.shortUrl();
+
+		given()
+				.redirects()
+				.follow(false)
+				.get(getServerUrl() + shortUrl)
+				.then()
+				.statusCode(HttpStatus.MOVED_PERMANENTLY.value())
+				.header(HttpHeaders.LOCATION, originalUrl);
+	}
+
+	private String getServerHealthCheckUrl() {
+		return getServerUrl() + "/actuator/health";
+	}
+
+	private String getServerUrl() {
+		return LOCALHOST_URL + ":" + port;
 	}
 
 }
