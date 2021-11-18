@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class DefaultShortenerService implements ShortenerService {
+class DefaultShortenerService implements ShortenerService {
 
 	private final IdRepository idRepository;
 

@@ -16,11 +16,11 @@ class Base62 {
 
 	protected char[] dictionary;
 
-	public Base62() {
+	Base62() {
 		this.dictionary = DICTIONARY_62;
 	}
 
-	public String encode(BigInteger value) {
+	String encode(BigInteger value) {
 		List<Character> result = new ArrayList<Character>();
 		BigInteger base = new BigInteger("" + dictionary.length);
 		int exponent = 1;
@@ -53,7 +53,7 @@ class Base62 {
 		return sb.toString();
 	}
 
-	public BigInteger decode(String str) {
+	BigInteger decode(String str) {
 		char[] chars = new char[str.length()];
 		str.getChars(0, str.length(), chars, 0);
 

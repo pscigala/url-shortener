@@ -10,9 +10,9 @@ class MultiThreadIdPoolGeneratorTest {
 
 	@Test
 	void shouldReturnIdPoolsGeneratedByMultipleThreads() {
-		MultiThreadIdPoolGenerator gener = new MultiThreadIdPoolGenerator();
+		MultiThreadIdPoolGenerator generator = new MultiThreadIdPoolGenerator();
 
-		List<IdsPool> idsPools = gener.generateNextPools(70);
+		List<IdsPool> idsPools = generator.generateNextPools(70);
 
 		assertNotNull(idsPools);
 	}

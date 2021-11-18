@@ -43,14 +43,13 @@ class MultiThreadIdPoolGenerator implements IdPoolGenerator {
 		} else {
 			lock.lock();
 			try {
-				List<IdsPool> r = new LinkedList<>();
-
+				List<IdsPool> result = new LinkedList<>();
 				for (int i = 0; i < poolsAmount; i++) {
 					Collection<String> generatedIds = generate(lastPoolNumber);
-					r.add(new IdsPool(lastPoolNumber, generatedIds));
+					result.add(new IdsPool(lastPoolNumber, generatedIds));
 					lastPoolNumber++;
 				}
-				return r;
+				return result;
 			} finally {
 				lock.unlock();
 			}

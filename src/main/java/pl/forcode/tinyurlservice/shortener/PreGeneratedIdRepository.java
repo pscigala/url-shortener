@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static java.util.stream.Collectors.toCollection;
 
 @Component
-public class PreGeneratedIdRepository implements IdRepository {
+class PreGeneratedIdRepository implements IdRepository {
 
 	private ConcurrentLinkedQueue<ShortUrlId> idQueue;
 

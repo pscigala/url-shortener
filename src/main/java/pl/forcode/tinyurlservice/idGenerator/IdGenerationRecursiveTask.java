@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.RecursiveTask;
 
-public class IdGenerationRecursiveTask extends RecursiveTask<Collection<String>> {
+class IdGenerationRecursiveTask extends RecursiveTask<Collection<String>> {
 
 	private static final int THRESHOLD = 2000_00;
 
@@ -17,6 +17,7 @@ public class IdGenerationRecursiveTask extends RecursiveTask<Collection<String>>
 		this.to = to;
 	}
 
+	@Override
 	protected Collection<String> compute() {
 		if ((to.subtract(from).intValue()) <= THRESHOLD) {
 			return generateId();
@@ -26,10 +27,10 @@ public class IdGenerationRecursiveTask extends RecursiveTask<Collection<String>>
 		IdGenerationRecursiveTask left = new IdGenerationRecursiveTask(from, middleIndex);
 		IdGenerationRecursiveTask right = new IdGenerationRecursiveTask(middleIndex, to);
 
-		left.fork(); //split job
+		left.fork();
 
 		Collection<String> rightResult = right.compute();
-		Collection<String> leftResult = left.join(); //wait for result
+		Collection<String> leftResult = left.join();
 
 		rightResult.addAll(leftResult);
 		return rightResult;

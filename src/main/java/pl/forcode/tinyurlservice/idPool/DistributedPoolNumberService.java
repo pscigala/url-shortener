@@ -13,7 +13,7 @@ import pl.forcode.tinyurlservice.idPool.exception.PoolNumberGetException;
 
 @Service
 @Log4j2
-public class DistributedPoolNumberService implements PoolNumberService, SharedCountListener {
+class DistributedPoolNumberService implements PoolNumberService, SharedCountListener {
 
 	private static final String POOL_COUNTER_N_NAME = "/UrlShortener/nextPoolNumber";
 
