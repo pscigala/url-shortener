@@ -14,7 +14,7 @@ class Base62IdGenerator {
 
 		while (!from.equals(to)) {
 			result.add(base62.encode(from));
-			from = from.add(new BigInteger("1"));
+			from = from.add(BigInteger.ONE);
 		}
 
 		return result;

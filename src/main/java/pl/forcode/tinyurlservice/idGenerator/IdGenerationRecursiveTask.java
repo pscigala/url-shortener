@@ -37,7 +37,7 @@ class IdGenerationRecursiveTask extends RecursiveTask<Collection<String>> {
 	}
 
 	private BigInteger calculateMiddleIndex() {
-		return from.add((to.subtract(from).divide(new BigInteger("2"))));
+		return from.add((to.subtract(from).divide(BigInteger.TWO)));
 	}
 
 	private Set<String> generateId() {

@@ -17,7 +17,7 @@ class MultiThreadIdPoolGenerator implements IdPoolGenerator {
 	private static final ReentrantLock lock = new ReentrantLock();
 
 	private static final int RANGE = 1_000_000;
-	private static final BigInteger RANGE_OFFSET = new BigInteger(String.valueOf(RANGE));
+	private static final BigInteger RANGE_OFFSET = BigInteger.valueOf(RANGE);
 
 	public static final int DEFAULT_ID_POOLS_AMOUNT = 1;
 
@@ -59,8 +59,8 @@ class MultiThreadIdPoolGenerator implements IdPoolGenerator {
 
 	private Collection<String> generate(long rangeNumber) {
 		//todo propper math adding on biginteger
-		BigInteger from = new BigInteger(String.valueOf(rangeNumber * RANGE - RANGE)).add(RANGE_OFFSET);
-		BigInteger to = new BigInteger(String.valueOf(rangeNumber * RANGE)).add(RANGE_OFFSET);
+		BigInteger from = BigInteger.valueOf(rangeNumber * RANGE - RANGE).add(RANGE_OFFSET);
+		BigInteger to = BigInteger.valueOf(rangeNumber * RANGE).add(RANGE_OFFSET);
 		return generate(from, to);
 	}
 

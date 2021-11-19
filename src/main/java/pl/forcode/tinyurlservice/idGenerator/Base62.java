@@ -22,7 +22,7 @@ class Base62 {
 
 	String encode(BigInteger value) {
 		List<Character> result = new ArrayList<Character>();
-		BigInteger base = new BigInteger("" + dictionary.length);
+		BigInteger base = BigInteger.valueOf(dictionary.length);
 		int exponent = 1;
 		BigInteger remaining = value;
 		while (true) {
@@ -66,16 +66,16 @@ class Base62 {
 		Map<Character, BigInteger> dictMap = new HashMap<>();
 		int j = 0;
 		for (char c : dictionary) {
-			dictMap.put(c, new BigInteger("" + j++));
+			dictMap.put(c, BigInteger.valueOf(j++));
 		}
 
 		BigInteger bi = BigInteger.ZERO;
-		BigInteger base = new BigInteger("" + dictionary.length);
+		BigInteger base = BigInteger.valueOf(dictionary.length);
 		int exponent = 0;
 		for (char c : chars2) {
 			BigInteger a = dictMap.get(c);
 			BigInteger b = base.pow(exponent).multiply(a);
-			bi = bi.add(new BigInteger("" + b));
+			bi = bi.add(b);
 			exponent++;
 		}
 
