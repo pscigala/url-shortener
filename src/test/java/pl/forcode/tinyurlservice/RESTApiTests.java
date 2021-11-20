@@ -7,9 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import pl.forcode.tinyurlservice.redis.TestRedisConfiguration;
+import pl.forcode.tinyurlservice.config.TestContainersConfig;
 import pl.forcode.tinyurlservice.web.dto.CreateShortUrlDTO;
 import pl.forcode.tinyurlservice.web.dto.CreateShortUrlResultDTO;
 
@@ -19,7 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(
 		webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@ExtendWith(TestRedisConfiguration.class)
+@ExtendWith(TestContainersConfig.class)
+@Import(TestContainersConfig.class)
 public class RESTApiTests {
 
 	private static final String LOCALHOST_URL = "http://localhost";
